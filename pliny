@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+set -e
+
+: ${PLINY_ENCFS_PATH:="$HOME/.journal"}
+: ${PLINY_MOUNT_PATH:="$HOME/mnt/journal"}
+: ${EDITOR:=vi}
+
+# Mounting
+mkdir -p "$PLINY_ENCFS_PATH" "$PLINY_MOUNT_PATH"
+encfs "$PLINY_ENCFS_PATH" "$PLINY_MOUNT_PATH"
+echo "Mounted journal: $PLINY_MOUNT_PATH"
+
+read -p "Open today's entry ([y]/n)? " SHOULD_OPEN_ENTRY
+
+# Opening today's entry if requested
+case "$SHOULD_OPEN_ENTRY" in
+    [nN]* )
+        break;;
+    * )
+        ENTRY_PATH="$PLINY_MOUNT_PATH/$(date +%Y-%m-%d).md"
+        $EDITOR "$ENTRY_PATH";;
+esac
+
+# Unmounting
+encfs -u "$PLINY_MOUNT_PATH"
