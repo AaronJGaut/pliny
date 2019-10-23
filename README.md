@@ -28,3 +28,4 @@ Some functionality can be modified by setting the following variables:
 * `EDITOR` - The command to run for the text editor (default: `vi`)
 * `PLINY_ENCFS_PATH` - The path of the encrypted file system (default: `$HOME/.journal`)
 * `PLINY_MOUNT_PATH` - The path that the journal will be mounted to (default: `$HOME/mnt/journal`)
+* `PLINY_ENTRY_SUFFIX` - Goes after the date in the journal entry filename (default: `.md`)

@@ -3,6 +3,7 @@ set -e
 
 : ${PLINY_ENCFS_PATH:="$HOME/.journal"}
 : ${PLINY_MOUNT_PATH:="$HOME/mnt/journal"}
+: ${PLINY_ENTRY_SUFFIX:=".md"}
 : ${EDITOR:=vi}
 
 # Mounting
@@ -17,7 +18,7 @@ case "$SHOULD_OPEN_ENTRY" in
     [nN]* )
         break;;
     * )
-        ENTRY_PATH="$PLINY_MOUNT_PATH/$(date +%Y-%m-%d).md"
+        ENTRY_PATH="$PLINY_MOUNT_PATH/$(date +%Y-%m-%d)$PLINY_ENTRY_SUFFIX"
         $EDITOR "$ENTRY_PATH";;
 esac
 
