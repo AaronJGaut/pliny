@@ -1,23 +1,27 @@
 #!/usr/bin/env sh
+
+# Exit on an error
 set -e
 
+# Defaults
 : ${PLINY_ENCFS_PATH:="$HOME/.journal"}
 : ${PLINY_MOUNT_PATH:="$HOME/mnt/journal"}
 : ${PLINY_ENTRY_SUFFIX:=".md"}
 : ${EDITOR:=vi}
 
-# Mounting
+# Making sure the EncFS and mount directories exist
 mkdir -p "$PLINY_ENCFS_PATH" "$PLINY_MOUNT_PATH"
+
+# Mounting
 encfs "$PLINY_ENCFS_PATH" "$PLINY_MOUNT_PATH"
 echo "Mounted journal: $PLINY_MOUNT_PATH"
 
+# Unmount on exit
 function unmount_journal()
 {
     encfs -u $PLINY_MOUNT_PATH > /dev/null
     echo "Unmounted journal"
 }
-
-# Unmounting on exit
 trap unmount_journal EXIT
 
 echo "Open an entry? [1]"
@@ -26,7 +30,7 @@ echo "(2) Yes, yesterday's entry"
 echo "(3) No, exit"
 read -p ">>> " RESPONSE
 
-# Opening today's entry if requested
+# Open an entry if requested
 case "$RESPONSE" in
     3* )
         break;;
