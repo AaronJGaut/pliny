@@ -3,6 +3,13 @@
 # Exit on an error
 set -e
 
+if ! `command -v encfs >& /dev/null`
+then
+    echo Error: EncFS is not installed 1>&2
+    exit 1
+fi
+
+
 # Defaults
 : ${PLINY_ENCFS_PATH:="$HOME/.journal"}
 : ${PLINY_MOUNT_PATH:="$HOME/mnt/journal"}
@@ -28,7 +35,7 @@ echo "Open an entry? [1]"
 echo "(1) Yes, today's entry"
 echo "(2) Yes, yesterday's entry"
 echo "(3) No, exit"
-read -p ">>> " RESPONSE
+read -p "> " RESPONSE
 
 # Open an entry if requested
 case "$RESPONSE" in
