@@ -14,14 +14,18 @@ Do `make install_local` to install to `$HOME/.local/bin`
 
 Run `pliny`
 
-After providing the password, the journal will be mounted to the mount directory, which is printed out.
-Then the script will ask if you want to create an entry for the day.
-While this prompt is up, the journal files are accessible in the mount point and can be interacted with from another terminal window, for example.
-If the user responds "yes", a journal entry with today's date will be opened in a text editor.
-If the user says "no" or after closing the text editor created with a "yes" response, the journal will be unmounted.
+## First run
 
 The first time `pliny` is run, `EncFS` will prompt with some setup questions (see `man encfs` for details) and ask you to create a password.
 This password will be needed next time to access the journal.
+Once the first time setup is done, `pliny` goes into the behavior described in the next section.
+
+## Regular usage
+
+After providing the password to decrypt the journal, it will be mounted to the mount directory, which is printed out.
+Then the script will give an opportunity to edit today's journal entry, or yesterday's.
+After you close the editor or opt not to edit, the journal will be unmounted.
+
 
 Some functionality can be modified by setting the following variables:
 
