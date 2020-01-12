@@ -1,18 +1,20 @@
-LOCAL_INSTALL_PATH = $(HOME)/.local/bin
+PREFIX ?= /usr/local
 BIN_NAME = pliny
 
 default:
-	@echo "No default target. Use make install_local to install to $(LOCAL_INSTALL_PATH)"
+	@echo "No default target."
+	@echo "Use make install to install to $(PREFIX)"
+	@echo "Set the PREFIX variable to change this path"
 	@exit 2
 .PHONY: default
 
-install_local: $(LOCAL_INSTALL_PATH)/$(BIN_NAME)
-.PHONY: install_local
+install: $(PREFIX)/bin/$(BIN_NAME)
+.PHONY: install
 
-$(LOCAL_INSTALL_PATH)/$(BIN_NAME) : $(BIN_NAME) | $(LOCAL_INSTALL_PATH)
-	cp $< $@
+$(PREFIX)/bin/$(BIN_NAME): $(BIN_NAME) | $(PREFIX)/bin/
+	install $(BIN_NAME) $(PREFIX)/bin/
 
-$(LOCAL_INSTALL_PATH):
+$(PREFIX)/bin/:
 	mkdir -p $@
 
 $(BIN_NAME):
