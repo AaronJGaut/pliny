@@ -3,7 +3,7 @@
 # Exit on an error
 set -e
 
-if ! `command -v encfs >& /dev/null`
+if ! command -v encfs 1> /dev/null 2> /dev/null
 then
     echo Error: EncFS is not installed 1>&2
     exit 1
@@ -11,10 +11,10 @@ fi
 
 
 # Defaults
-: ${PLINY_ENCFS_PATH:="$HOME/.journal"}
-: ${PLINY_MOUNT_PATH:="$HOME/mnt/journal"}
-: ${PLINY_ENTRY_SUFFIX:=".md"}
-: ${EDITOR:=vi}
+: "${PLINY_ENCFS_PATH:="$HOME/.journal"}"
+: "${PLINY_MOUNT_PATH:="$HOME/mnt/journal"}"
+: "${PLINY_ENTRY_SUFFIX:=".md"}"
+: "${EDITOR:=vi}"
 
 # Making sure the EncFS and mount directories exist
 mkdir -p "$PLINY_ENCFS_PATH" "$PLINY_MOUNT_PATH"
@@ -24,9 +24,9 @@ encfs "$PLINY_ENCFS_PATH" "$PLINY_MOUNT_PATH"
 echo "Mounted journal: $PLINY_MOUNT_PATH"
 
 # Unmount on exit
-function unmount_journal()
+unmount_journal()
 {
-    encfs -u $PLINY_MOUNT_PATH > /dev/null
+    encfs -u "$PLINY_MOUNT_PATH" > /dev/null
     echo "Unmounted journal"
 }
 trap unmount_journal EXIT
@@ -35,18 +35,19 @@ echo "Open an entry? [1]"
 echo "(1) Yes, today's entry"
 echo "(2) Yes, yesterday's entry"
 echo "(3) No, exit"
-read -p "> " RESPONSE
+printf "> "
+read -r RESPONSE
 
 # Open an entry if requested
 case "$RESPONSE" in
     3* )
-        break;;
+        ;;
     2* )
         ENTRY_PATH="$PLINY_MOUNT_PATH/$(date --date=yesterday +%Y-%m-%d)$PLINY_ENTRY_SUFFIX"
         $EDITOR "$ENTRY_PATH"
-        break;;
+        ;;
     * )
         ENTRY_PATH="$PLINY_MOUNT_PATH/$(date +%Y-%m-%d)$PLINY_ENTRY_SUFFIX"
         $EDITOR "$ENTRY_PATH"
-        break;;
+        ;;
 esac
